@@ -6,7 +6,11 @@ Cours.pdf/
 Cours.pdf
 .git
 TD_recherche/
+<<<<<<< HEAD
 TD_recherche
 TD_proba/
 TD_proba
 >>>>>>> 0882f3b (added a perfect running gcc shell script)
+=======
+TD_proba/
+>>>>>>> 7a9219c (added a perfect running gcc shell script)
