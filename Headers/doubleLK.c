@@ -72,5 +72,3 @@ void printList(Node *list) {
   }
   printf("END");
 }
-// insertion d'une liste deja vide, ou bien utilisant la method du "appended
-// list"
