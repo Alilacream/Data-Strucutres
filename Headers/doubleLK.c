@@ -8,6 +8,8 @@ typedef struct node {
   struct node *prev;
 } Node;
 
+typedef enum { false = 0, true = 1 } bool;
+
 // Initialisation
 Node *dlist_new(int value) {
   Node *p = (Node *)malloc(sizeof(Node));
@@ -63,6 +65,33 @@ Node *appendHead(Node *lk, int value) {
   current->prev = new;
   // returning the full linked list;
   return lk;
+}
+// function recherche si l'element exist ou non.
+bool ilExist(Node *list, int data) {
+  // making a current, to head in the list
+  Node *current = list;
+  while (current->next != NULL) {
+    current = current->next;
+    if (current->id == data)
+      return true;
+  }
+  return false;
+}
+// remove first node next to the HEAD
+Node *removedHead(Node *list) {
+  Node *tmp = list->next;
+  list->next = tmp->next;
+  free(tmp);
+  return list;
+}
+Node *removedTail(Node *list) {
+  Node *current = list;
+  while (current->next != NULL) {
+    current = current->next;
+  }
+  Node *Deleted = current->next;
+  free(Deleted);
+  return list;
 }
 //  print all the list up
 void printList(Node *list) {
