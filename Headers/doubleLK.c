@@ -1,25 +1,70 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node {
+typedef struct node {
   int id;
-  struct Node *next;
-  struct Node *prev;
+  short int taille;
+  struct node *next;
+  struct node *prev;
 } Node;
-// checks the size of the list given
-int howMany(Node *list) {
-  int taille;
-  if (!list) {
-    printf("the given list is empty");
-    return -1;
+
+// Initialisation
+Node *dlist_new(int value) {
+  Node *p = (Node *)malloc(sizeof(Node));
+  if (!p) {
+    printf("allocation espace memoire n'est pas affichier");
+    return NULL;
   }
-  while (list != NULL) {
-    taille++;
-    list = list->next;
-  }
-  return taille;
+  p->id = value;
+  p->taille = 0;
+  p->prev = NULL;
+  p->next = NULL;
+  return p;
 }
-// print all the list up
+// a function that adds a new node to the list lk
+Node *appendTail(Node *lk, int value) {
+  Node *p = (Node *)malloc(sizeof(Node));
+  if (!p) {
+    printf("allocation n'est pas assurez");
+    return NULL;
+  }
+  Node *current = lk;
+  while (current->next != NULL) {
+    current = current->next;
+  }
+  p->id = value;
+  p->taille = ++current->taille;
+  // makes the liason between the last added new Node in the last current;
+  current->next = p;
+  p->prev = current;
+
+  p->next = NULL;
+  // returns the full list
+  return lk;
+}
+// a function that adds a new node at the HEAD of the given list;
+Node *appendHead(Node *lk, int value) {
+  Node *new = malloc(sizeof *new);
+  if (!new) {
+    printf("allocation n'est pas assurez");
+    return NULL;
+  }
+  Node *current = lk;
+  while (current->prev != NULL) {
+    current = current->prev;
+  }
+  // asserting values;
+  new->id = value;
+  current->taille++;
+  new->taille = current->taille - 1;
+  // Node linking;
+  new->prev = NULL;
+  new->next = current;
+  current->prev = new;
+  // returning the full linked list;
+  return lk;
+}
+//  print all the list up
 void printList(Node *list) {
   while (list != NULL) {
     printf("data: %d\n", list->id);
@@ -29,77 +74,3 @@ void printList(Node *list) {
 }
 // insertion d'une liste deja vide, ou bien utilisant la method du "appended
 // list"
-
-Node *insertion(Node *list, int value) {
-  if (!list) {
-    printf("the given list is already empty but we will initialize it.\n");
-    list = (Node *)malloc(sizeof(Node));
-    list->id = value;
-    list->next = NULL;
-    list->prev = NULL;
-    return list;
-  }
-
-  Node *current = list;
-  while (current->next != NULL) {
-    current = current->next;
-  }
-  // New Node:
-  Node *appended = (Node *)malloc(sizeof(Node));
-  if (appended == NULL) {
-    return list;
-  }
-
-  appended->id = value;
-  current->next = appended;
-  appended->prev = current;
-  appended->next = NULL;
-  // perhaps our given list might already have element in it, so we check it out
-  // to make sure the insert method is safe.
-
-  return list;
-}
-// deletion in the end
-void *DeletedEnd(Node *prev, Node *Deleted) {
-  if (!prev || Deleted->next != NULL) {
-    printf("Unable to deleted, one of the given lists are empty ");
-    return NULL;
-  }
-  prev->next = NULL;
-  free(Deleted);
-}
-// Deleted a select Node given, by using the position attribute.
-void DeleteAt(Node *list, int position) {
-  // error handlers
-  if (!list) {
-    printf("cannot remove anything the given list is already empty");
-    return;
-  }
-  int taille = howMany(list);
-
-  if (position < 1 || position > taille) {
-    printf("the given position is off");
-    return;
-  }
-
-  Node *current = list;
-  Node *temp = list;
-  // checks in the head position.
-  if (position == 1) {
-    list = list->next;
-    free(temp);
-  }
-  // Moves from node to another to confirm the one who will be deleted
-  // but the node that it will move on it will be the one behind the deleted one
-  // why? go to NOTE:
-  for (int i = 1; i < position - 1; i++) {
-    current = current->next;
-  }
-  // NOTE:
-  // the Deleted node takes the current->next, which if we wanted the 4
-  // position, the loop will take the 3rd node and then deleted will choose the
-  // 4th.
-  Node *Deleted = current->next;
-  current->next = Deleted->next;
-  free(Deleted);
-}
