@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct node {
+typedef struct Node {
   int id;
   short int taille;
-  struct node *next;
-  struct node *prev;
+  struct Node *next;
+  struct Node *prev;
 } Node;
 
 typedef enum { false = 0, true = 1 } bool;
@@ -43,6 +43,15 @@ Node *appendTail(Node *lk, int value) {
   p->next = NULL;
   // returns the full list
   return lk;
+}
+
+void InsertionPosition(Node *list, int pos, int value) {
+  Node *current = list;
+  if (pos == 1) {
+    current = current->next;
+    current->id = value;
+    return;
+  }
 }
 // a function that adds a new node at the HEAD of the given list;
 Node *appendHead(Node *lk, int value) {
