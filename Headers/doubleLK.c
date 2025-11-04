@@ -3,43 +3,52 @@
 
 typedef struct Node {
   int id;
-  short int taille;
   struct Node *next;
   struct Node *prev;
 } Node;
 
+typedef struct DList {
+  short int taille;
+  struct Node *Head;
+  struct Node *Tail;
+} DList;
+
 typedef enum { false = 0, true = 1 } bool;
 
 // Initialisation
-Node *dlist_new(int value) {
-  Node *p = (Node *)malloc(sizeof(Node));
+DList *dlist_new(int value) {
+  DList *List = malloc(sizeof(*List));
+  Node *p = malloc(sizeof(*p));
+
   if (!p) {
     printf("allocation espace memoire n'est pas affichier");
     return NULL;
   }
   p->id = value;
-  p->taille = 0;
   p->prev = NULL;
   p->next = NULL;
-  return p;
+  List->Head = p;
+  List->taille++;
+  List->Tail = NULL;
+  return List;
 }
 // a function that adds a new node to the list lk
-Node *appendTail(Node *lk, int value) {
+DList *appendTail(DList *lk, int value) {
+  if (!lk)
+    return NULL;
+  // new tail
   Node *p = (Node *)malloc(sizeof(Node));
   if (!p) {
     printf("allocation n'est pas assurez");
     return NULL;
   }
-  Node *current = lk;
-  while (current->next != NULL) {
-    current = current->next;
-  }
-  p->id = value;
-  p->taille = ++current->taille;
-  // makes the liason between the last added new Node in the last current;
-  current->next = p;
-  p->prev = current;
 
+  Node *current = lk->Tail;
+  p->id = value;
+  // makes the liason between the last added new Node in the last current;
+  p->prev = current;
+  current->next = p;
+  // because it's the tail of the list then, the next node is NULL
   p->next = NULL;
   // returns the full list
   return lk;
