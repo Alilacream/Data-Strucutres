@@ -75,8 +75,6 @@ Node *appendHead(Node *lk, int value) {
   }
   // asserting values;
   new->id = value;
-  current->taille++;
-  new->taille = current->taille - 1;
   // Node linking;
   new->prev = NULL;
   new->next = current;
