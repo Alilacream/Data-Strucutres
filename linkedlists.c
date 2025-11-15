@@ -1,15 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node {
-  int valeur;
-  struct Node *suivant;
-};
-
-struct List {
-  short int taille;
-  struct Node *Head;
-};
+;
 
 int main(void) {
   struct List *list = malloc(sizeof(*list));

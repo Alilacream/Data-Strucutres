@@ -32,17 +32,46 @@ DList *dlist_new(int value) {
   List->Tail = NULL;
   return List;
 }
-// a function that adds a new node to the list lk
-DList *appendTail(DList *lk, int value) {
-  if (!lk)
-    return NULL;
-  // new tail
-  Node *p = (Node *)malloc(sizeof(Node));
-  if (!p) {
-    printf("allocation n'est pas assurez");
-    return NULL;
+// a function that adds a new node at the HEAD of the given list;
+void appendHead(DList *lk, int value) {
+  if (!lk) {
+    printf("the list is already empty.");
+    return;
   }
 
+  Node *p = malloc(sizeof(*p));
+  if (!p) {
+    printf("the list is already empty.");
+    return;
+  }
+
+  Node *current = lk->Head;
+  if (current->next != NULL) {
+    p->id = value;
+    // make a the linking between nodes.
+    p->next = current->next;
+    current->next->prev = p;
+
+    current->next = p;
+    p->prev = current;
+    return;
+  }
+  current->next = p;
+  p->prev = current;
+  lk->taille++;
+}
+// Appends a new node in the linked list as a last node (the tail of the linked
+// list).
+void appendTail(DList *lk, int value) {
+  if (!lk)
+    return;
+  // new tail
+  Node *p = malloc(sizeof(*p));
+  if (!p) {
+    printf("allocation n'est pas assurez");
+    return;
+  }
+  // gives the current the last Node to make the complexity shorter
   Node *current = lk->Tail;
   p->id = value;
   // makes the liason between the last added new Node in the last current;
@@ -51,41 +80,41 @@ DList *appendTail(DList *lk, int value) {
   // because it's the tail of the list then, the next node is NULL
   p->next = NULL;
   // returns the full list
-  return lk;
+  lk->taille++;
 }
-
-void InsertionPosition(Node *list, int pos, int value) {
-  Node *current = list;
-  if (pos == 1) {
-    current = current->next;
-    current->id = value;
+// Add a new node into a position:
+void Insertion_Position(DList *lk, int position, int value) {
+  if (!lk) {
+    printf("the list given is empty");
+    return;
+  }
+  Node *current = lk->Head;
+  Node *p = malloc(sizeof(*p));
+  if (!p) {
+    printf("error in the allocation");
+    return;
+  }
+  // gives the value to the new node.
+  p->id = value;
+  // in the head of the tail.
+  if (position < 1 || position > lk->taille) {
+    printf("the position if out of question.\n");
+    return;
+  }
+  if (position == 1) {
+    current->prev = p;
+    p->next = current;
+    p->prev = NULL;
+    lk->Head = p;
+    lk->taille++;
     return;
   }
 }
-// a function that adds a new node at the HEAD of the given list;
-Node *appendHead(Node *lk, int value) {
-  Node *new = malloc(sizeof *new);
-  if (!new) {
-    printf("allocation n'est pas assurez");
-    return NULL;
-  }
-  Node *current = lk;
-  while (current->prev != NULL) {
-    current = current->prev;
-  }
-  // asserting values;
-  new->id = value;
-  // Node linking;
-  new->prev = NULL;
-  new->next = current;
-  current->prev = new;
-  // returning the full linked list;
-  return lk;
-}
-// function recherche si l'element exist ou non.
-bool ilExist(Node *list, int data) {
+
+// Finds the data contained in each node (linear search)
+bool ilExist(DList *list, int data) {
   // making a current, to head in the list
-  Node *current = list;
+  Node *current = list->Head;
   while (current->next != NULL) {
     current = current->next;
     if (current->id == data)
@@ -93,21 +122,29 @@ bool ilExist(Node *list, int data) {
   }
   return false;
 }
-// remove first node next to the HEAD
-Node *removedHead(Node *list) {
-  Node *tmp = list->next;
-  list->next = tmp->next;
-  free(tmp);
-  return list;
-}
-Node *removedTail(Node *list) {
-  Node *current = list;
-  while (current->next != NULL) {
-    current = current->next;
+// removes the first node, and the list have the NEW head of the next iterated
+// Node.
+void removedHead(DList *list) {
+  if (list == NULL || list->Head == NULL) {
+    printf("the given node or list is empty.\n");
+    return;
   }
-  Node *Deleted = current->next;
+  Node *tmp = list->Head;
+  list->Head = tmp->next;
+  free(tmp);
+  list->taille--;
+}
+// removes the last node at O(1) Complexity
+void removedTail(DList *list) {
+  // Giving the Deleted variable the last node (the tail of the linked list)
+  Node *Deleted = list->Tail;
+  if (list->Tail == NULL) {
+    printf("the given Node is already Empty.\n");
+    return;
+  }
+  list->Tail = Deleted->prev;
   free(Deleted);
-  return list;
+  list->taille--;
 }
 //  print all the list up
 void printList(Node *list) {
