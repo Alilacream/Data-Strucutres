@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <threads.h>
 
 typedef enum { true = 1, false = 0 } bool;
 
@@ -9,35 +10,39 @@ typedef struct Element {
 } Element;
 
 typedef struct File {
-  Element *Index;
+  Element *Head;
+  Element *queue;
 } File;
 
-// Same as our beloved PUSH of the stack structure, this one moves differently.
-// NOTE: because when we push the new element, his is normaly the last one
-// right? Then it is safe to say to for the new element (the last one) for it
-// next chaine to be of NULL. NOTE: that the queue structure works with FIFO
-// (first in, first out).
+File *initialiser(File *f) {
+  f = malloc(sizeof(*f));
+  f->Head = NULL;
+  f->queue = NULL;
+  return f;
+}
+/* Same as our beloved PUSH of the stack structure, this one moves differently.
+NOTE: because when we push the new element, his is normally the last one
+right? Then it is safe to say to for the new element (the last one) for it
+next link to be of NULL.
+NOTE: that the queue structure works with FIFO
+(first in, first out).*/
 void emfiler(File *f, int value) {
-  Element *new = (Element *)malloc(sizeof(Element));
+  Element *new = malloc(sizeof(*new));
 
   if (!f || !new) {
     printf("there's is no queue here.\n");
     return;
   }
-
   new->id = value;
   new->next = NULL;
-
-  if (f->Index != NULL) {
-    Element *current = f->Index;
-    while (current->next != NULL) {
-      current = current->next;
-    }
-    current->next = new;
+  if (f->queue == NULL) {
+    // Empty queue
+    f->Head = new;
+    f->queue = new;
     return;
-  }
-
-  f->Index = new;
+  } // Add to end and update tail
+  f->queue->next = new;
+  f->queue = new;
 }
 
 void defiler(File *f) {
@@ -45,8 +50,17 @@ void defiler(File *f) {
     printf("there's is no queue here.\n");
     return;
   }
-
-  Element *removed = f->Index;
-  f->Index = removed->next;
+  // now we begin removing the node.
+  Element *removed = f->Head;
+  f->Head = removed->next;
   free(removed);
+}
+void affichier_File(File *f) {
+  Element *current = f->Head;
+  while (current != NULL) {
+    printf("%d\n", current->id);
+    printf("|\n");
+    current = current->next;
+  }
+  printf("Null\n");
 }
