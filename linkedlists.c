@@ -1,46 +1,54 @@
+#include "Headers/linkedlists.c"
 #include <stdio.h>
 #include <stdlib.h>
 
-;
-
-int main(void) {
-  struct List *list = malloc(sizeof(*list));
+int main(int argc, char *argv[]) {
+  // Initialize list
+  List *list = malloc(sizeof(*list));
   if (!list) {
-    printf("the allocation has failed");
-    return 0;
+    printf("Failed to allocate memory for list\n");
+    return EXIT_FAILURE;
   }
-  struct Node *element = malloc(sizeof(*element));
-  element->valeur = 1;
-  element->suivant = NULL;
+  list->taille = 0;
+  list->Head = NULL;
 
-  struct Node *newNode = malloc(sizeof(*newNode));
-  if (!newNode) {
-    printf("we couldn't allocate a newNode");
-    return 0;
+  // Create initial node
+  Node *firstNode = malloc(sizeof(*firstNode));
+  if (!firstNode) {
+    printf("Failed to allocate memory for first node\n");
+    free(list);
+    return EXIT_FAILURE;
   }
-  newNode->valeur = 2;
-  newNode->suivant = NULL;
+  firstNode->id = 1;
+  firstNode->next = NULL;
+  list->Head = firstNode;
+  list->taille = 1;
 
-  element->suivant = newNode;
-  // now we have the whole list of 1->2
+  printf("=== Initial List ===\n");
+  printList(list);
+  printf("\n\n");
 
-  list->Head = element;
-  // current to be able to print the list without changing the orignal list;
-  struct Node *current = list->Head;
-  // to remove element
-  struct Node *tmp = list->Head;
-  // print of list
-  while (current != NULL) {
-    printf("[%d]---->", current->valeur);
-    list->taille++;
-    current = current->suivant;
-  }
-  list->Head = tmp->suivant;
-  free(tmp);
-  free(list->Head);
-  if (list->Head == NULL)
-    printf("END\n");
+  // Test insertion function
+  printf("=== After inserting values 2, 3, 4 ===\n");
+  insertion(list, 2);
+  insertion(list, 3);
+  insertion(list, 4);
+  printList(list);
+  printf("\n\n");
 
-  printf("%p", list->Head);
-  return 0;
+  // Test deletion at position 2
+  printf("=== After deleting at position 2 ===\n");
+  DeleteAt(list, 2);
+  printList(list);
+  printf("\n\n");
+
+  // Test reverse function
+  printf("=== After attempting to reverse list ===\n");
+  reverse_linkedlist(list);
+  printList(list);
+  printf("\n\n");
+
+  // Clean up memory
+  Clean_up(list);
+  return EXIT_SUCCESS;
 }

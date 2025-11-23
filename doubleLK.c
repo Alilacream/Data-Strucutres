@@ -1,7 +1,6 @@
-<<<<<<< HEAD
-=======
 #include "Headers/doubleLK.c"
 #include <stdio.h>
+
 int main() {
   DList *myList = dlist_new();
 
@@ -24,4 +23,3 @@ int main() {
 
   return 0;
 }
->>>>>>> 35165fb (Finished adding the new/upgraded functions)

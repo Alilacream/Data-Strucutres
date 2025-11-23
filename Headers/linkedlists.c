@@ -23,11 +23,11 @@ void printList(List *list) {
 // insertion d'une liste deja vide, ou bien utilisant la method du "appended
 // list"
 
-List *insertion(List *list, int value) {
+void insertion(List *list, int value) {
 
   if (!list) {
     printf("the given list is already empty but we will initialize it.\n");
-    return NULL;
+    return;
   }
   Node *current = list->Head;
 
@@ -39,7 +39,7 @@ List *insertion(List *list, int value) {
   Node *appended = (Node *)malloc(sizeof(Node));
   if (appended == NULL) {
     printf("couldn't allocate memory to the appended Node\n");
-    return list;
+    return;
   }
 
   appended->id = value;
@@ -48,7 +48,7 @@ List *insertion(List *list, int value) {
   // perhaps our given list might already have element in it, so we check it out
   // to make sure the insert method is safe.
 
-  return list;
+  return;
 }
 void insertionLocal(List *list, int value, int position) {
   if (!list) {
@@ -107,4 +107,42 @@ void DeleteAt(List *list, int position) {
   Node *Deleted = current->next;
   current->next = Deleted->next;
   free(Deleted);
+}
+/* A function that reverse the entire linked list.
+ * Example: 1 -> 2 -> 3 -> 4 -> 5 -> NULL;
+ * now becomes : NULL <-1 <- 2 <- 3 <- 4 <- 5
+ * key concept, just change the pointers and reverse then into the prev,
+ * the same logic will be done for the Double linkedlist.
+ */
+List *reverse_linkedlist(List *list) {
+  if (!list)
+    return NULL;
+  // Logic begins
+  Node *prev = NULL;
+  Node *current = list->Head;
+  while (current != NULL) {
+    Node *new = current->next;
+    // points now to its prev
+    current->next = prev;
+    // prev becomes the current,
+    // HACK: once the current which was the pointer of the head becomes:
+    // the last node, the last node is going to be the Head.
+    prev = current;
+    // current now goes to the next (the iteration).
+    current = new;
+  }
+  // after the loop finishes. now the prev becomes the new Header of the list
+  // which is currently the last node, and current && new equals NULL
+  list->Head = prev;
+  return list;
+}
+// clean up the list
+void Clean_up(List *list) {
+  Node *current = list->Head;
+  while (current != NULL) {
+    Node *temp = current;
+    current = current->next;
+    free(temp);
+  }
+  free(list);
 }
