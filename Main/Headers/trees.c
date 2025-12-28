@@ -78,12 +78,49 @@ void Remove_All(Tree *root) {
   Remove_All(root->left);
   Remove_All(root->right);
 }
-
-// Removes by Id
-void Remove_ByID(Tree *root, int value) {
-  if (root->id == value) {
-    free(root);
+Tree *Find_Min(Tree *root) {
+  while (root->left != NULL) {
+    root = root->left;
   }
-  Remove_ByID(root->right, value);
-  Remove_ByID(root->left, value);
+  return root;
+}
+// Removes by Id
+Tree *Remove_Root(Tree *root, int value) {
+  if (root == NULL) {
+    return NULL;
+  }
+  // if it was a Leaf it will be removed easily
+
+  // Else if it had a son
+
+  if (root->id < value) {
+    return Remove_Root(root->right, value);
+  } else if (root->id > value) {
+    return Remove_Root(root->left, value);
+  } else {
+    // Real problem begins
+    if (root->left == NULL) {
+      Tree *tmp = root->right;
+      free(root);
+      return tmp;
+    } else if (root->right == NULL) {
+      Tree *tmp = root->left;
+      free(root);
+      return tmp;
+    }
+    // in case 2 children;
+    Tree *tmp = Find_Min(root->right);
+    root->id = tmp->id;
+    // removing the node we orignally got.
+    root->right = Remove_Root(root->right, tmp->id);
+  }
+
+  return root;
+}
+
+// Removes all the Tree
+void Free_all(Tree *root) {
+  Free_all(root->left);
+  Free_all(root->right);
+  free(root);
 }
