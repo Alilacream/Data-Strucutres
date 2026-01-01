@@ -1,16 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 typedef struct Node {
   int id;
   struct Node *next;
 } Node;
+typedef struct AlphaNode {
+  char *name;
+  struct AlphaNode *next;
+} AlphaNode;
 
 typedef struct List {
   short int taille;
   struct Node *Head;
 } List;
-
+typedef struct AlphaList {
+  short int taille;
+  struct AlphaNode *Head;
+} AlphaList;
 // print all the list up
 void printList(List *list) {
   Node *current = list->Head;
@@ -20,9 +27,7 @@ void printList(List *list) {
   }
   printf("END");
 }
-// insertion d'une liste deja vide, ou bien utilisant la method du "appended
-// list"
-
+// Insertion d'un element dans la list numeric.
 void insertion(List *list, int value) {
 
   if (!list) {
@@ -50,6 +55,7 @@ void insertion(List *list, int value) {
 
   return;
 }
+// Insertion d'un element avec un parameter de position.
 void insertionLocal(List *list, int value, int position) {
   if (!list) {
     printf("the given list is already empty but we will initialize it.\n");
@@ -73,7 +79,31 @@ void insertionLocal(List *list, int value, int position) {
   new->next = current;
   list->Head = new;
 }
-
+// Helper function
+int Compare(AlphaNode *one, AlphaNode *two) {
+  return strcmp(one->name, two->name);
+}
+// Insert Alphabetically && IN order.
+void Add(AlphaList *list, char *value,
+         int cmp(AlphaNode *one, AlphaNode *two)) {
+  if (list == NULL) {
+    printf("the list is already empty");
+    exit(EXIT_FAILURE);
+  }
+  AlphaNode *current = list->Head;
+  // Nouvelle Element.
+  AlphaNode *new = malloc(sizeof(*new));
+  new->name = value;
+  new->next = NULL;
+  while (current->next != NULL) {
+    if (cmp(current->name, current->next->name) > 0) {
+      break;
+    }
+    current = current->next;
+  }
+  current->next = new;
+  new->next = current->next->next;
+}
 // Deleted a select Node given, by using the position attribute.
 void DeleteAt(List *list, int position) {
   // error handlers

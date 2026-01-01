@@ -18,7 +18,7 @@ typedef enum { false = 0, true = 1 } bool;
 // 1. Initialization: Returns an EMPTY list (Cleaner approach)
 DList *dlist_new() {
   DList *List = malloc(sizeof(*List));
-  if (!List) {
+  if (List == NULL) {
     printf("Memory allocation failed.\n");
     return NULL;
   }
@@ -30,7 +30,7 @@ DList *dlist_new() {
 
 // 2. Append Head: Handles empty vs non-empty lists correctly
 void appendHead(DList *lk, int value) {
-  if (!lk)
+  if (lk == NULL)
     return;
 
   Node *p = malloc(sizeof(*p));

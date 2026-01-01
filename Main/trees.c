@@ -13,15 +13,15 @@ int main() {
   printf("BST Content: ");
   Print_Tree(root);
   printf("\n");
-
+  int taille = Taille_tree(root);
+  printf("la taille d'arbre est %d\n", taille);
+  bool find = Find_Node(root, 20);
+  if (find) {
+    printf("the Node exists in the tree!\n");
+  } else {
+    printf("the Node does not exist in the tree!\n");
+  }
   // Deletion test
-  printf("Removing 30 and 50...\n");
-  root = Remove_Root(root, 30);
-  root = Remove_Root(root, 50);
-
-  printf("Final Tree: ");
-  Print_Tree(root);
-  printf("\n");
 
   return 0;
 }

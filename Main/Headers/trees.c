@@ -27,7 +27,7 @@ Tree *insertion(Tree *root, int value) {
     return create_node(value);
   }
 
-  // 2. Otherwise, recurse down the tree
+  // 2. Otherwise, go down.
   if (value < root->id) {
     root->left = insertion(root->left, value);
   } else if (value > root->id) {
@@ -50,15 +50,21 @@ int Taille_tree(Tree *tree) {
 
 // Fixed Search: Return results from the recursive calls
 bool Find_Node(Tree *tree, int value) {
-  if (tree == NULL)
+  if (tree == NULL) {
     return false;
-  if (tree->id == value)
+  }
+  // if the it equals then return it directly
+  if (tree->id == value) {
     return true;
-
-  if (value < tree->id)
+    // if the value was smaller, go to the left side
+  } else if (value < tree->id) {
     return Find_Node(tree->left, value);
-  else
+    // else go to the right side
+  } else if (value > tree->id) {
     return Find_Node(tree->right, value);
+  }
+
+  return false;
 }
 
 void Print_Tree(Tree *tree) {
@@ -93,10 +99,10 @@ Tree *Remove_Root(Tree *root, int value) {
 
   // Else if it had a son
 
-  if (root->id < value) {
-    return Remove_Root(root->right, value);
-  } else if (root->id > value) {
+  if (value < root->id) {
     return Remove_Root(root->left, value);
+  } else if (value > root->id) {
+    return Remove_Root(root->right, value);
   } else {
     // Real problem begins
     if (root->left == NULL) {
@@ -118,9 +124,18 @@ Tree *Remove_Root(Tree *root, int value) {
   return root;
 }
 
-// Removes all the Tree
+// Removes all the Tree. using Pre-Ordre way.
 void Free_all(Tree *root) {
   Free_all(root->left);
   Free_all(root->right);
   free(root);
+}
+// finds the Min of the tree
+int Plus_Min(Tree *root) {
+  Tree *right = Find_Min(root->right);
+  Tree *left = Find_Min(root->left);
+  if (right->id < left->id) {
+    return right->id;
+  }
+  left->id;
 }
