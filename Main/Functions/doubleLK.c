@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
+#include "../Headers/doubleLK.h"
 typedef struct Node {
   int id;
   struct Node *next;
@@ -12,8 +10,6 @@ typedef struct DList {
   struct Node *Head;
   struct Node *Tail;
 } DList;
-
-typedef enum { false = 0, true = 1 } bool;
 
 // 1. Initialization: Returns an EMPTY list (Cleaner approach)
 DList *dlist_new() {
@@ -148,13 +144,20 @@ bool ilExist(DList *list, int data) {
 
 // 6. Remove Head: Handle becoming empty. O(1)
 void removedHead(DList *list) {
-  if (!list || !list->Head)
+  if (!list)
     return;
 
   Node *tmp = list->Head;
-
+  if (list->Head == list->Tail) {
+    list->Head = NULL;
+    list->Tail = NULL;
+    return;
+  }
   // Move Head forward
-  list->Head = list->Head->next;
+  list->Head = tmp->next;
+  if (list->Head != NULL) {
+    list->Head->prev = NULL;
+  }
   // free le tmp
   free(tmp);
   list->taille--;
@@ -169,7 +172,9 @@ void removedTail(DList *list) {
 
   // Move Tail backward
   list->Tail = deleted->prev;
-
+  if (list->Tail != NULL) {
+    list->Tail->next = NULL;
+  }
   free(deleted);
   list->taille--;
 }
@@ -246,7 +251,7 @@ void printList(DList *list) {
 }
 
 // 11. Research and print list up to value
-void research_Print_List(DList *list, int value) {
+void research_print_list(DList *list, int value) {
   if (!list || !list->Head)
     return;
 

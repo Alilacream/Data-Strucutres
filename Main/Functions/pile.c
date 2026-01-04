@@ -1,7 +1,5 @@
-#include <stdio.h>
+#include "../Headers/pile.h"
 #include <stdlib.h>
-#define TABLEAU 10
-typedef enum { false = 0, true = 1 } bool;
 // struct where all info's will be there.
 typedef struct Element {
   int id;
@@ -23,6 +21,16 @@ typedef struct Pile {
  and lastly pile -> sommet which was the orignal/old stack, now holds the entire
  new stack
 */
+Pile *initialiser(void) {
+  Pile *stack = malloc(sizeof(*stack));
+  if (!stack) {
+    printf("error the allocation");
+    exit(1);
+  }
+  stack->Sommet = NULL;
+  return stack;
+}
+
 void empilerPile(Pile *pile, int value) {
   Element *new = (Element *)malloc(sizeof(Element));
   if (!pile) {

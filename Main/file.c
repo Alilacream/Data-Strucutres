@@ -1,7 +1,7 @@
-#include "Headers/file.c"
+#include "Headers/file.h"
 
 int main() {
-  File *f = initialiser(f);
+  File *f = initialiser();
   emfiler(f, 1);
   emfiler(f, 2);
   emfiler(f, 3);

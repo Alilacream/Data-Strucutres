@@ -1,8 +1,8 @@
-#include "Headers/pile.c"
+#include "Headers/pile.h"
 #include <stdbool.h>
 #include <stdio.h>
 int main(int argc, char *argv[]) {
-  Pile *pile = (Pile *)malloc(sizeof(Pile));
+  Pile *pile = initialiser();
   // PUSH to stack.
   empilerPile(pile, 1);
   empilerPile(pile, 2);

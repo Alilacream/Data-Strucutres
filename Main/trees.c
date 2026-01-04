@@ -1,4 +1,4 @@
-#include "Headers/trees.c"
+#include "Headers/trees.h"
 #include <stdio.h>
 
 int main() {

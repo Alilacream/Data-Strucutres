@@ -21,8 +21,7 @@ fi
 
 #runs the programe
 while (true); do
-  gcc "$filename" -o main && echo "Ran the programe, Succesfully." || echo "sadly, the programe failed."
-  sleep 2 # wait 2 seconds to complete the execution
+  gcc -I./Headers "Functions/$filename" "$filename" -o main && echo "Ran the programe, Succesfully." sleep 2 # wait 2 seconds to complete the execution
   ./main
   break
 done

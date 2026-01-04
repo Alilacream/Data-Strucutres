@@ -1,10 +1,9 @@
-#include "Headers/linkedlists.c"
-#include <stdio.h>
-#include <stdlib.h>
+#include "Headers/linkedlists.h"
+
 /* Num test
 int main(int argc, char *argv[]) {
   // Initialize list
-  List *list = malloc(sizeof(*list));
+  List *list = malloc(sizeof(*list));H
   if (!list) {
     printf("Failed to allocate memory for list\n");
     return EXIT_FAILURE;
@@ -54,12 +53,7 @@ int main(int argc, char *argv[]) {
 }
 */
 int main(int argc, char *argv[]) {
-  AlphaList *list = malloc(sizeof(*list));
-  if (list == NULL) {
-    printf("allocation failed");
-    exit(0);
-  }
-  list->Head = NULL;
+  AlphaList *list = initialiser();
   Add(list, "Ahmed", Compare);
   Add(list, "Bahmed", Compare);
   Add(list, "Ahned", Compare);
