@@ -11,7 +11,6 @@ int main(int argc, char *argv[]) {
   bool empty = estVide(pile);
   if (empty)
     printf("the list is empty");
-  depilerPile(pile);
   printStack(pile);
 
   return 0;

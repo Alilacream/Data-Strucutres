@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 typedef struct Node {
   int id;
   struct Node *next;
@@ -90,19 +91,22 @@ void Add(AlphaList *list, char *value,
     printf("the list is already empty");
     exit(EXIT_FAILURE);
   }
-  AlphaNode *current = list->Head;
   // Nouvelle Element.
   AlphaNode *new = malloc(sizeof(*new));
-  new->name = value;
+  strcpy(new->name, value);
   new->next = NULL;
-  while (current->next != NULL) {
-    if (cmp(current->name, current->next->name) > 0) {
-      break;
-    }
+  if (list->Head == NULL) {
+    list->Head = new;
+  }
+  // Current to go threw the list.
+  AlphaNode *current = list->Head;
+  while (current->next != NULL && (cmp(current, new) < 0)) {
     current = current->next;
   }
+
+  new->next = current->next;
   current->next = new;
-  new->next = current->next->next;
+  list->taille++;
 }
 // Deleted a select Node given, by using the position attribute.
 void DeleteAt(List *list, int position) {

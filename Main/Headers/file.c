@@ -10,13 +10,13 @@ typedef struct Element {
 } Element;
 
 typedef struct File {
-  Element *Head;
+  Element *Sommet;
   Element *queue;
 } File;
 
 File *initialiser(File *f) {
   f = malloc(sizeof(*f));
-  f->Head = NULL;
+  f->Sommet = NULL;
   f->queue = NULL;
   return f;
 }
@@ -37,7 +37,7 @@ void emfiler(File *f, int value) {
   new->next = NULL;
   if (f->queue == NULL) {
     // Empty queue
-    f->Head = new;
+    f->Sommet = new;
     f->queue = new;
     return;
   } // Add to end and update tail
@@ -51,12 +51,12 @@ void defiler(File *f) {
     return;
   }
   // now we begin removing the node.
-  Element *removed = f->Head;
-  f->Head = removed->next;
+  Element *removed = f->Sommet;
+  f->Sommet = removed->next;
   free(removed);
 }
 void affichier_File(File *f) {
-  Element *current = f->Head;
+  Element *current = f->Sommet;
   while (current != NULL) {
     printf("%d\n", current->id);
     printf("|\n");

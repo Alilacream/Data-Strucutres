@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define TABLEAU 10
 typedef enum { false = 0, true = 1 } bool;
 // struct where all info's will be there.
 typedef struct Element {

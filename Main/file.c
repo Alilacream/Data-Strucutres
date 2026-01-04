@@ -1,5 +1,4 @@
 #include "Headers/file.c"
-#include <stdio.h>
 
 int main() {
   File *f = initialiser(f);

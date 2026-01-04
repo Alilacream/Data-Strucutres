@@ -33,27 +33,27 @@ void appendHead(DList *lk, int value) {
   if (lk == NULL)
     return;
 
+  lk->taille++;
   Node *p = malloc(sizeof(*p));
   if (!p)
     return;
 
   p->id = value;
   p->prev = NULL;
-  p->next = lk->Head; // Point to old head
-
+  p->next = NULL; // Point to old head
+  // FIX: If list was empty, Head and Tail are the same node
+  if (lk->Head == NULL) {
+    lk->Head = p;
+    lk->Tail = p;
+    return;
+  }
   // if the head itself was not null then we point it to the prev node
   if (lk->Head != NULL) {
     lk->Head->prev = p;
+    p->next = lk->Head;
   }
 
   lk->Head = p; // Update list Head pointer
-
-  // FIX: If list was empty, Head and Tail are the same node
-  if (lk->Tail == NULL) {
-    lk->Tail = p;
-  }
-
-  lk->taille++;
 }
 
 // 3. Append Tail: Updates Head if list was empty
@@ -67,7 +67,7 @@ void appendTail(DList *lk, int value) {
 
   p->id = value;
   p->next = NULL;
-  p->prev = lk->Tail; // Point back to old tail
+  p->prev = NULL; // Point back to old tail
 
   if (lk->Tail != NULL) {
     lk->Tail->next = p; // Update old tail's next
@@ -88,17 +88,17 @@ void Insertion_Position(DList *lk, int position, int value) {
     return;
 
   // Bounds check
-  if (position < 1 || position > lk->taille + 1) {
+  if (position < 0 || position > lk->taille + 1) {
     printf("Position out of bounds.\n");
     return;
   }
 
   // Optimization: Use existing functions for ends
-  if (position == 1) {
+  if (position == 1 || position == 0) {
     appendHead(lk, value);
     return;
   }
-  if (position == lk->taille + 1) {
+  if (position == lk->taille + 1 || position == lk->taille) {
     appendTail(lk, value);
     return;
   }
@@ -155,15 +155,7 @@ void removedHead(DList *list) {
 
   // Move Head forward
   list->Head = list->Head->next;
-
-  // If list is NOT empty after removal, clean the prev pointer
-  if (list->Head != NULL) {
-    list->Head->prev = NULL;
-  } else {
-    // If list became empty, update Tail as well
-    list->Tail = NULL;
-  }
-
+  // free le tmp
   free(tmp);
   list->taille--;
 }
@@ -177,13 +169,6 @@ void removedTail(DList *list) {
 
   // Move Tail backward
   list->Tail = deleted->prev;
-
-  if (list->Tail != NULL) {
-    list->Tail->next = NULL;
-  } else {
-    // If list became empty, update Head as well
-    list->Head = NULL;
-  }
 
   free(deleted);
   list->taille--;
@@ -199,17 +184,11 @@ void Remove_value(DList *list, int value) {
   while (current != NULL) {
     if (current->id == value) {
       // Found the value, remove this node
-      if (current == list->Head) {
-        removedHead(list);
-      } else if (current == list->Tail) {
-        removedTail(list);
-      } else {
-        // Node is in the middle
-        current->prev->next = current->next;
-        current->next->prev = current->prev;
-        free(current);
-        list->taille--;
-      }
+      current->prev->next = current->next;
+      current->next->prev = current->prev;
+      free(current);
+      list->taille--;
+
       printf("Found and removed the value %d\n", value);
       return;
     }
