@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "../Headers/trees.h"
 
-typedef enum { false = 0, true = 1 } bool;
 typedef struct Tree {
   int id;
   struct Tree *right;
@@ -66,7 +64,7 @@ bool Find_Node(Tree *tree, int value) {
 
   return false;
 }
-
+// Pré_Odre way:
 void Print_Tree(Tree *tree) {
   if (tree == NULL)
     return;
@@ -75,6 +73,26 @@ void Print_Tree(Tree *tree) {
   printf("%d\n ", tree->id);
   Print_Tree(tree->left);
   Print_Tree(tree->right);
+}
+// In_Ordre_way:
+void Print_IN(Tree *tree) {
+  if (tree == NULL)
+    return;
+
+  // In-order traversal: Left, Root, Right (prints sorted numbers!)
+  Print_Tree(tree->left);
+  printf("%d\n ", tree->id);
+  Print_Tree(tree->right);
+}
+// Post Ordre:
+void Print_Post(Tree *tree) {
+  if (tree == NULL)
+    return;
+
+  // In-order traversal: Left, Root, Right (prints sorted numbers!)
+  Print_Tree(tree->left);
+  Print_Tree(tree->right);
+  printf("%d\n ", tree->id);
 }
 // Removes all tree
 void Remove_All(Tree *root) {
@@ -93,7 +111,7 @@ Tree *Find_Min(Tree *root) {
 // Removes by Id
 Tree *Remove_Root(Tree *root, int value) {
   if (root == NULL) {
-    return NULL;
+    return root;
   }
   // if it was a Leaf it will be removed easily
 

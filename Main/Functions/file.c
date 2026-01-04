@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <threads.h>
-
-typedef enum { true = 1, false = 0 } bool;
+#include "../Headers/file.h"
 
 typedef struct Element {
   int id;
@@ -14,8 +10,8 @@ typedef struct File {
   Element *queue;
 } File;
 
-File *initialiser(File *f) {
-  f = malloc(sizeof(*f));
+File *initialiser() {
+  File *f = malloc(sizeof(*f));
   f->Sommet = NULL;
   f->queue = NULL;
   return f;

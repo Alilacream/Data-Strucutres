@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include "../Headers/linkedlists.h"
 typedef struct Node {
   int id;
   struct Node *next;
@@ -51,10 +48,6 @@ void insertion(List *list, int value) {
   appended->id = value;
   current->next = appended;
   appended->next = NULL;
-  // perhaps our given list might already have element in it, so we check it out
-  // to make sure the insert method is safe.
-
-  return;
 }
 // Insertion d'un element avec un parameter de position.
 void insertionLocal(List *list, int value, int position) {
@@ -83,6 +76,17 @@ void insertionLocal(List *list, int value, int position) {
 // Helper function
 int Compare(AlphaNode *one, AlphaNode *two) {
   return strcmp(one->name, two->name);
+}
+// Allocation String:
+AlphaList *initialiser() {
+  AlphaList *list = (AlphaList *)malloc(sizeof(AlphaList));
+  if (list == NULL) {
+    printf("allocation failed");
+    return NULL;
+  }
+  list->Head = NULL;
+  list->taille = 0;
+  return list;
 }
 // Insert Alphabetically && IN order.
 void Add(AlphaList *list, char *value,
@@ -128,16 +132,9 @@ void DeleteAt(List *list, int position) {
     current = current->next;
     free(temp);
   }
-  // Moves from node to another to confirm the one who will be deleted
-  // but the node that it will move on it will be the one behind the deleted one
-  // why? go to NOTE:
   for (int i = 1; i < position - 1; i++) {
     current = current->next;
   }
-  // NOTE:
-  // the Deleted node takes the current->next, which if we wanted the 4
-  // position, the loop will take the 3rd node and then deleted will choose the
-  // 4th.
   Node *Deleted = current->next;
   current->next = Deleted->next;
   free(Deleted);
@@ -149,11 +146,13 @@ void DeleteAt(List *list, int position) {
  * the same logic will be done for the Double linkedlist.
  */
 List *reverse_linkedlist(List *list) {
+
   if (!list)
     return NULL;
   // Logic begins
+  List *inverser = list;
   Node *prev = NULL;
-  Node *current = list->Head;
+  Node *current = inverser->Head;
   while (current != NULL) {
     Node *new = current->next;
     // points now to its prev
@@ -167,8 +166,8 @@ List *reverse_linkedlist(List *list) {
   }
   // after the loop finishes. now the prev becomes the new Header of the list
   // which is currently the last node, and current && new equals NULL
-  list->Head = prev;
-  return list;
+  inverser->Head = prev;
+  return inverser;
 }
 // clean up the list
 void Clean_up(List *list) {

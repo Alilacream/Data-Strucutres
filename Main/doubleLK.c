@@ -1,5 +1,4 @@
-#include "Headers/doubleLK.c"
-#include <stdio.h>
+#include "Headers/doubleLK.h"
 
 int main() {
   DList *myList = dlist_new();
@@ -10,7 +9,7 @@ int main() {
 
   Insertion_Position(myList, 2, 15); // List: 5 <-> 15 <-> 10 <-> 20
   printList(myList);
-  research_Print_List(myList, 15);
+  research_print_list(myList, 15);
 
   removedHead(myList);        // List: 15 <-> 10 <-> 20
   Delete_Position(myList, 2); // <-> 15 <->
